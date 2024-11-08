@@ -5,33 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
     <title>Home</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="agenda">
-        <div id="container"></div>   
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Segunda</th>
-                    <th scope="col">Terça</th>
-                    <th scope="col">Quarta</th>
-                    <th scope="col">Quinta</th>
-                    <th scope="col">Sexta</th>
-                </tr>
-            </thead>
-            <tbody>                           
-            </tbody>
-        </table>
-    </div>
-    <div class="dropdown">
-        <button>Petianos</button>
-        <div class="content">           
-        </div>
-    </div>
-    <button type="button" id="clear">Limpar Filtro</button>    
-    <script type="module" src="home.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+     <!-- Barra superior -->
+     <header class="top-bar">
+        <img src="../uploads/logopetbranca.png" alt="Logo" class="logo">
+
+        <!-- Botões de navegação -->
+        <nav class="nav-buttons">
+            <a href="../home/home.html">PET Impedimentos</a>
+            <a href="../petianos/petianos.html">Petianos</a>
+            <a href="../projetos/projetos.html">Projetos</a>
+        </nav>
+
+        <!-- Botão de sair -->
+        <a href="../login/index.html" class="logout-button">Sair</a>
+    </header>
+    
+    <main>
+        <div class="center">
+            <div class="agenda">
+                <div id="container"></div>   
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Segunda</th>
+                            <th scope="col">Terça</th>
+                            <th scope="col">Quarta</th>
+                            <th scope="col">Quinta</th>
+                            <th scope="col">Sexta</th>
+                        </tr>
+                    </thead>
+                    <tbody>                           
+                    </tbody>
+                </table>
+            </div>
+            <div class="dropdown">
+                <h2 class="title">Petianos</h2>
+                <div class="content"></div> <!-- Listagem de petianos será sempre visível -->
+            </div>
+            <button type="button" id="clear">Limpar Filtro</button>    
+            <script type="module" src="home.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+            </div>
+    </main>
 </body>
 </html>
