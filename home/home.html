@@ -4,32 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
-    <title>Home</title>
+    <link rel="stylesheet" href="../styles/background.css">
+    <link rel="stylesheet" href="../styles/menu.css">    
+    <script src="../scripts/menu.js"></script>   
+    
+    <title>Pet Impedimentos</title>
 </head>
 <body>
-    <div class="agenda">
-        <div id="container"></div>   
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Segunda</th>
-                    <th scope="col">Terça</th>
-                    <th scope="col">Quarta</th>
-                    <th scope="col">Quinta</th>
-                    <th scope="col">Sexta</th>
-                </tr>
-            </thead>
-            <tbody>                           
-            </tbody>
-        </table>
-    </div>
-    <div class="dropdown">
-        <button>Petianos</button>
-        <div class="content">           
+    <header class="cabecalho">
+      <div class="cabecalho_img-menu"> 
+        <img class="cabecalho_img" src="../images/logo-pet.png" alt="Logo Pet">
+        <nav class="cabecalho_menu">
+          <a class="cabecalho_menu_item" aria-current="page" href="">PET Impedimentos</a>
+          <a class="cabecalho_menu_item" href="../projetos/projetos.html">Projetos</a>
+          <a class="cabecalho_menu_item" href="../petianos/petianos.html">Petianos</a>          
+        </nav>
+      </div>         
+      <button class="cabecalho_button" type="button" onclick="redirectToLogin()">Sair</button>
+    </header>
+    
+    <main>
+      <section id="cont_principal">
+        <div class="agenda">
+          <div id="container"></div>   
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Segunda</th>
+                      <th scope="col">Terça</th>
+                      <th scope="col">Quarta</th>
+                      <th scope="col">Quinta</th>
+                      <th scope="col">Sexta</th>
+                  </tr>
+              </thead>
+              <tbody>                           
+              </tbody>
+          </table>
         </div>
-    </div>
-    <button type="button" id="clear">Limpar Filtro</button>    
+      </section>
+      <section id="cont_secundario">
+        <div class="dropdown">
+          <button>Petianos</button>
+          <div class="content"></div>
+        </div>
+        <button type="button" id="clear">Limpar Filtro</button>
+      </section>
+    </main>
     <script type="module" src="home.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>

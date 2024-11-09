@@ -4,48 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="petianos.css">
-    <title>Petianos</title>
+    <link rel="stylesheet" href="../styles/background.css">
+    <link rel="stylesheet" href="../styles/menu.css">    
+    <script src="../scripts/menu.js"></script>
+    <title>Pet Impedimentos</title>
 </head>
 <body>
+    <header class="cabecalho">
+      <div class="cabecalho_img-menu"> 
+        <img class="cabecalho_img" src="../images/logo-pet.png" alt="Logo Pet">
+        <nav class="cabecalho_menu">
+          <a class="cabecalho_menu_item" href="../home/home.html">PET Impedimentos</a>
+          <a class="cabecalho_menu_item" href="../projetos/projetos.html">Projetos</a>
+          <a class="cabecalho_menu_item" aria-current="page" href="">Petianos</a>          
+        </nav>
+      </div>         
+      <button class="cabecalho_button" type="button" onclick="redirectToLogin()">Sair</button>
+    </header>
+
+
     <main>
-        <section id="cont_p">            
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Segunda</th>
-                        <th scope="col">Terça</th>
-                        <th scope="col">Quarta</th>
-                        <th scope="col">Quinta</th>
-                        <th scope="col">Sexta</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </section>
-        <div class="modal-container">
-            <div class="modal">
-              <h2>Novo Petiano</h2>
-              <hr />
-              <label>Nome</label>
-              <input type="text" id="nomePet">
-              <label>Cor</label>
-              <input type="color" id="corPet">              
-              <hr />
-              <div class="btns">
-                <button id="salvarBT">Salvar</button>
-                <button id="cancelarBT">Cancelar</button>
-              </div>
+      <section id="cont_p">            
+          <table>
+              <thead>
+                  <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Segunda</th>
+                      <th scope="col">Terça</th>
+                      <th scope="col">Quarta</th>
+                      <th scope="col">Quinta</th>
+                      <th scope="col">Sexta</th>
+                  </tr>
+              </thead>
+              <tbody></tbody>
+          </table>
+      </section>
+      <div class="modal-container">
+          <div class="modal">
+            <h2>Novo Petiano</h2>
+            <hr />
+            <label>Nome</label>
+            <input type="text" id="nomePet">
+            <label>Cor</label>
+            <input type="color" id="corPet">              
+            <hr />
+            <div class="btns">
+              <button id="salvarBT">Salvar</button>
+              <button id="cancelarBT">Cancelar</button>
             </div>
-        </div>
-        <section id="cont_s">
-            <button type="button" id="delete">Excluir Petiano</button>
-            <button type="button" id="newPet">+ Novo Petiano</button>
-            <div id="petianos"></div>
-        </section>
-    </main>    
-    <script type="module" src="petianos.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+          </div>
+      </div>
+      <section id="cont_s">
+          <button type="button" id="delete">Excluir Petiano</button>
+          <button type="button" id="newPet">+ Novo Petiano</button>
+          <div id="petianos"></div>
+      </section>
+  </main>
+  <script type="module" src="petianos.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script> 
 </body>
 </html>
