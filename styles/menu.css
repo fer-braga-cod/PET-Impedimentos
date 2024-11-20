@@ -38,12 +38,13 @@
     border-radius: 10px;
     padding: 5px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .cabecalho_menu_item:hover{
     background-color: white;
     color: #000000;
+    transform: scale(1.1);
 }
 
 .cabecalho_menu_item[aria-current="page"] {    
@@ -59,10 +60,11 @@
     background: #810202a4;
     border: none;
     color: white;
-    transition: background-color 0.1s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .cabecalho_button:hover{
     background-color: red;
     color: white;
+    transform: scale(1.1);
 }
