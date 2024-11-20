@@ -1,23 +1,57 @@
+* {
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+}
+
+/* Estilo da tabela */
 table, th, td {
-    border: 1px solid;
+    border: 1px solid #ffffff;
 }
 
-table{    
-    border-collapse: collapse;    
+.body{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
 }
 
-td {
+table {
+    border-collapse: collapse;
+    background-color: #1f1f24;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.title{
+    text-align: center;
+    padding: 5%;
+}
+
+#center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 70%;
+    margin: 2% auto;
+}
+
+th, td {
     text-align: center;
     height: 70px;
-    width: 148px;    
+    width: 148px;
+    color: #e0e0e0;
 }
 
-.nome{
+.nome {
     padding: 3px 6px;
     margin: 2px 0px;
-    width:min-content;
+    background-color: #3b3b5e;
+    color: #000000;
     border-radius: 8px;
 }
+
 .nomes{
     display: flex;
     flex-direction: column;
@@ -32,44 +66,49 @@ main{
     margin: 30px;
 }
 
-.dropdown button{
-    background-color: hsl(0, 0%, 80%);
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-}
-.dropdown label{
-    display: flex;
-    color: black;
-    text-decoration: none;
-    padding: 10px 15px;
-    direction: rtl;
-    align-items:center;
-}
-.dropdown .content{
-    display: none;
-    position: absolute;
-    background-color: hsl(0, 0%, 95%);
-    min-width: 100px;    
-    box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.8);
+/* Estilo do dropdown com lista de petianos ao lado */
+.dropdown {
+    position: relative;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    gap: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    width: 20%; 
     overflow-y: auto;
-    max-height: 150px;
+    max-height: 80%; /* Limita a altura da lista com rolagem */
 }
-.dropdown:hover .content{
+
+.dropdown .content label {
     display: flex;
-    flex-direction: column;
-    align-items: start;  
+    align-items: center;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 8px;
+    cursor: pointer;
+    gap: 20px;
+    border-radius: 5px;
+    background-color: #1f1f24;
+    transition: background 0.1s ease;
 }
-.dropdown:hover button{
-    background-color: hsl(0, 0%, 70%);
+
+.dropdown .content label:hover {
+    background-color: #8873ff;
+    color: white;
 }
-#container{
+
+/* Esconde o botão, pois a lista é sempre visível */
+.dropdown button {
+    display: none;
+}
+
+#container {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     overflow-x: auto;
-    max-width: 756px;
-    gap: 10px;    
+    max-width: 100%;
+    gap: 10px;
 }
 
 ul{
@@ -78,7 +117,26 @@ ul{
     flex-shrink: 0;
 }
 
-.agenda{
-    background-color: azure;
+.agenda {
+    background-color: #ffffff; /* borda da agenda*/
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgb(0, 0, 0);
+    width: 70%;
+}
 
+#clear {
+    background-color: #3b3b5e;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.1s ease;
+    margin-top: 15px;
+}
+
+#clear:hover {
+    background-color: #8873ff;
 }
