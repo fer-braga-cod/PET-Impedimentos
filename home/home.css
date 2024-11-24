@@ -65,6 +65,14 @@ main{
     margin: 30px;
 }
 
+#container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    max-width: 100%;
+    gap: 10px;
+}
+
 /* Estilo do dropdown com lista de petianos ao lado */
 .dropdown {
     position: relative;

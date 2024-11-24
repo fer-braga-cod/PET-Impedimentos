@@ -122,11 +122,11 @@ hr {
     color: white;
     cursor: pointer;
 }  
-#salvarBT, #salvarBT2 {
+#salvarBT{
    background-color: blue!important;
 }
   
-#cancelarBT, #cancelarBT2 {
+#cancelarBT, #fecharModalMem {
     background-color: brown!important;
 }
   

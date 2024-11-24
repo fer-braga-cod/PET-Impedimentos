@@ -87,7 +87,7 @@ function gerarDropdown(){
 }
 
 
-function excluirPetiano(nomeProjeto, nomePetiano) {
+function excluirPetiano(nomeProjeto, nomePetiano, li) {
     db.collection('projetos')
       .where('nome', '==', nomeProjeto)
       .get()
@@ -115,6 +115,8 @@ function excluirPetiano(nomeProjeto, nomePetiano) {
       .catch(error => {
           console.error('Erro ao buscar projeto:', error);
       });
+
+      li.remove();
 }
 
 
@@ -166,7 +168,7 @@ function confirmarDelete(mensagem, callback) {
     }
 }
 
-function deleteProj(projID){
+function deleteProj(projID, dropdown){
     const mensagem = "Tem certeza que deseja deletar esse projeto?";
   
     confirmarDelete(mensagem, () => { 
@@ -179,10 +181,11 @@ function deleteProj(projID){
             .catch((error) => {
                 console.error("Erro ao deletar documento:", error);
             });
+        dropdown.remove();
     });    
 }
 
-function excluirProjeto(nomeProj){
+function excluirProjeto(nomeProj, dropdown){
     const projRef = db.collection('projetos');    
 
     projRef.where('nome', '==', nomeProj)
@@ -192,7 +195,7 @@ function excluirProjeto(nomeProj){
             console.log('Nenhum projeto encontrado com esse nome.');
         } else {
             snapshot.docs.forEach(doc => {
-                deleteProj(doc.id);
+                deleteProj(doc.id, dropdown);
             });
         }
     })
@@ -201,8 +204,42 @@ function excluirProjeto(nomeProj){
     });
 }
 
-function addMembro(nome){
-    console.log(nome);
+function findDropdownByButtonText(buttonText) {   
+    const buttons = document.querySelectorAll('.dropdown-btn');   
+    for (let button of buttons) {
+      if (button.textContent.trim() === buttonText) {       
+        const dropdown = button.closest('.dropdown');
+        return dropdown;
+      }
+    }
+    return null;
+}
+
+function addMembro(idProj, nomeMem, nomeProj) {
+    const docRef = db.doc(`projetos/${idProj}`);
+
+    docRef.update({
+        membros: firebase.firestore.FieldValue.arrayUnion(nomeMem)
+    })
+    .then(() => {
+        console.log('Membro adicionado com sucesso!');
+
+    })
+    .catch((error) => {
+        console.error('Erro ao adicionar membro:', error);
+    });
+
+    const dropdown = findDropdownByButtonText(nomeProj);
+    const ul = dropdown.querySelector('ul');
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    span.textContent = nomeMem;    
+    const btn = document.createElement('button');
+    btn.textContent = 'X';
+    btn.classList.add('item-btn');   
+    li.appendChild(span);
+    li.appendChild(btn);  
+    ul.appendChild(li);
 }
 
 
@@ -219,9 +256,8 @@ document.getElementById("salvarBT").onclick = function()
 document.getElementById("cancelarBT").onclick = function()
 {closeModal()};
 
-document.getElementById("salvarBT2").onclick = function()
-{console.log("Cadastrar Membro")};
-document.getElementById("cancelarBT2").onclick = function()
+
+document.getElementById("fecharModalMem").onclick = function()
 {closeModal2()};
 
 document.getElementById("newProj").onclick = function()
@@ -230,6 +266,13 @@ document.getElementById("newProj").onclick = function()
 
 function openModal(modalNome){
     const modal = document.getElementById(modalNome);
+    modal.classList.add('active');
+}
+
+function openModalMem(nomeProjeto){
+    const modal = document.getElementById("addMembro");
+    const title = document.getElementById("addMemTitle");
+    title.textContent = nomeProjeto;
     modal.classList.add('active');
 }
 
@@ -245,22 +288,41 @@ lista.addEventListener('click', (event) => {
     const nomePetiano = li.querySelector('span').textContent;
     const nomeProjeto = li.closest('.dropdown').querySelector('.dropdown-btn').textContent;
     alert(`Você deseja excluir o petiano ${nomePetiano} do projeto ${nomeProjeto}?`);
-    excluirPetiano(nomeProjeto, nomePetiano); 
+    excluirPetiano(nomeProjeto, nomePetiano, li);
 
   }else if(event.target.classList.contains('excluirProj')){
     const nomeProjeto = event.target.closest('.dropdown').querySelector('.dropdown-btn').textContent;
-    excluirProjeto(nomeProjeto);
+    const dropdown = event.target.closest('.dropdown');
+    excluirProjeto(nomeProjeto, dropdown);
 
   }else if (event.target.classList.contains('novoMembro')) {
     //const projeto = event.target.closest('.dropdown').querySelector('.dropdown-btn').textContent;
-    openModal("addMembro");
+    const li = event.target.parentNode;
+    const nomeProjeto = li.closest('.dropdown').querySelector('.dropdown-btn').textContent;
+    openModalMem(nomeProjeto);
   }
 });
 
 const petianos = document.getElementById('petianos');
 petianos.addEventListener('click', (event) => {    
     const ul = event.target;     
-    addMembro(ul.textContent);  
+    const nomeProj = ul.closest('.modal').querySelector('#addMemTitle').textContent;    
+
+    const projRef = db.collection('projetos');
+    projRef.where('nome', '==', nomeProj)
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('Nenhum projeto encontrado com esse nome.');
+            } else {
+                snapshot.docs.forEach(doc => {
+                    addMembro(doc.id, ul.textContent, nomeProj);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar projeto:', error);
+        });
 });
 
 gerarDropdown();

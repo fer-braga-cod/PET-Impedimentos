@@ -47,6 +47,28 @@ function gerarDropdown(){
     });
 }
 
+function gerarListProj(){
+  const collectionRef = db.collection('projetos');
+
+  collectionRef.get()
+    .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+        const nome = doc.data().nome;
+        const lista = document.getElementById("listProj");
+        const label = document.createElement("label");
+        label.textContent = nome;
+        const input = document.createElement("input");
+        input.type = 'checkbox';
+        input.value = nome;
+        label.appendChild(input);
+        lista.appendChild(label);
+        });
+    })
+    .catch(error => {
+        console.error("Erro ao buscar dados:", error);
+    });
+}
+
 function getHorarios(usuarioSelecionado) {
     db.doc(`users/${usuarioSelecionado}`).get().then((doc) => {
       if (doc.exists) {
@@ -81,10 +103,7 @@ function getHorarios(usuarioSelecionado) {
 }
 
 function buscarUsuario(nome) {
-    const usersRef = db.collection('users');
-  
-    let userId;
-  
+    const usersRef = db.collection('users');       
     usersRef.where('nome', '==', nome)
       .get()
       .then(snapshot => {
@@ -98,10 +117,43 @@ function buscarUsuario(nome) {
       })
       .catch(error => {
         console.error('Erro ao buscar usuário:', error);
-      });
-  
-    return userId;
+      });      
 }
+
+function buscarProjeto(nome){
+  const projRef = db.collection('projetos'); 
+    
+  projRef.where('nome', '==', nome)
+    .get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('Nenhum projeto encontrado com esse nome.');
+      } else {
+        snapshot.docs.forEach(doc => {
+          getPetianos(doc.id);
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao buscar usuário:', error);
+    });    
+}
+
+function getPetianos(idProj){  
+  db.doc(`projetos/${idProj}`).get().then((doc) => {
+    if (doc.exists) {
+      const projeto = doc.data();
+      const membros = projeto.membros;
+      for(const membro of membros){
+        buscarUsuario(membro);
+      }
+    } else {
+      console.error(`Documento não encontrado para o projeto: ${idProj}`);
+    }
+  });
+}
+
+
 
 function marcarFiltro(nome, cor){
   const ul = document.createElement("ul");
@@ -134,10 +186,21 @@ usuarios.addEventListener('change', (event) => {
   }
 });
 
+const projetos = document.querySelector("#listProj");
+projetos.addEventListener('change', (event) => {
+  const checkbox = event.target;
+  if (checkbox.checked) {    
+    buscarProjeto(checkbox.value);    
+  }else{
+    limparTabela();
+  }
+});
+
 document.getElementById("clear").onclick = function()
 {limparTabela()};
 
 gerarTabela();
 gerarDropdown();
+gerarListProj();
 const tbody = document.querySelector("tbody");
 const container = document.querySelector("#container");
