@@ -81,10 +81,24 @@ main{
     max-height: 40%;
 }
 
-#petianos label{
+#petianos label {
     display: flex;
-    align-items:center;
-    direction:rtl;  
+    align-items: center;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    width: 95%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 600px;
+    background-color: #3b3b5e;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#petianos label:hover {
+    background-color: #8873ff;
+    transform: scale(1.1); 
 }
 /*##########################################################################*/
 #cont_s{

@@ -8,6 +8,9 @@
     width: 60%;
     border-radius: 10px;
     padding: 20px;
+    overflow-y: auto;
+    max-height: 700px;
+    border: 5px solid white;
 }
 
 .container{
@@ -35,18 +38,25 @@
     border-radius: 10px;
     border: none;
 }
-  
+
 .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    width: 400px;
+    width: 580px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    border: 10px solid white;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
-  
+
 .show {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .dropdown-content li span {
@@ -70,6 +80,70 @@ ul{
     padding: 0;
 }
 
+/* Estilo aprimorado para botões */
+button {
+    font-size: medium;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #333;
+    color: white;
+    transform: scale(1.05);
+}
+
+.excluirProj {
+    background-color: #e53935; /* Vermelho */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.excluirProj:hover {
+    background-color: #b71c1c; /* Vermelho mais escuro ao passar o mouse */
+    transform: scale(1.05);
+}
+
+.novoMembro {
+    background-color: #1976d2; /* Azul */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.novoMembro:hover {
+    background-color: #0d47a1; /* Azul mais escuro ao passar o mouse */
+    transform: scale(1.05);
+}
+
+#petianos ul {
+    list-style: none;
+    margin: 5px 0;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+#petianos ul:hover {
+    background-color: #e3f2fd;
+    transform: scale(1.05);  
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
 
 /*############ Cadastro Projeto ##################################*/
 hr {
@@ -79,26 +153,37 @@ hr {
 .modal-container {
     width: 100vw;
     position: fixed;
-    top: 30px;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Garante que o fundo do modal ocupe toda a tela */
     display: none;
     z-index: 999;
     justify-content: center;
-}  
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+}
 .modal {
     display: flex;
     flex-direction: column;
     padding: 30px;
     background-color: white;
     border-radius: 10px;
-    width: 50%;
+    width: 100%;
+    max-width: 600px; /* Define o tamanho máximo */
+    max-height: 80vh; /* Limita a altura a 80% da altura da tela */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); 
+    overflow-y: auto; /* Permite rolagem vertical */
+    overflow-x: hidden; 
 }
 .active {
     display: flex;
 }
   
 .active .modal {
-    animation: modal .4s;
-}  
+    animation: modal 0.4s;
+}
+
 @keyframes modal {
     from {
       opacity: 0;
@@ -122,12 +207,14 @@ hr {
     color: white;
     cursor: pointer;
 }  
-#salvarBT{
-   background-color: blue!important;
+#salvarBT {
+    background: linear-gradient(45deg, #4caf50, #2e7d32);
+    color: white;
 }
-  
+
 #cancelarBT, #fecharModalMem {
-    background-color: brown!important;
+    background: linear-gradient(45deg, #e53935, #b71c1c);
+    color: white;
 }
   
 @media (max-width: 500px) {

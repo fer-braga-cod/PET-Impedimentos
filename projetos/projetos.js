@@ -31,38 +31,63 @@ function gerarLista(){
     });
 }
 
+// Evento para fechar o dropdown ao clicar fora
+document.addEventListener('click', (event) => {
+    const dropdowns = document.querySelectorAll('.dropdown-content');
+    dropdowns.forEach(dropdown => {
+        const isClickInside = dropdown.closest('.dropdown').contains(event.target);
+        if (!isClickInside) {
+            dropdown.classList.remove('show'); // Fecha o dropdown
+        }
+    });
+});
 
-function gerarDropdown(){
+function gerarDropdown() {
     const collectionRef = db.collection('projetos');
 
     collectionRef.get()
     .then(snapshot => {
         snapshot.docs.forEach(doc => {
-            const petiano = doc.data();
-            const nome = petiano.nome;
-            const membros = petiano.membros;
+            const projeto = doc.data();
+            const nome = projeto.nome;
+            const cor = projeto.cor; // Cor do projeto
+            const membros = projeto.membros;
 
             const dropdown = document.createElement("div");
             dropdown.className = "dropdown";
+
             const button = document.createElement("button");
             button.className = "dropdown-btn";
             button.textContent = nome;
+            button.style.backgroundColor = cor; // Define a cor do botão
+
             const dropCont = document.createElement("div");
             dropCont.className = "dropdown-content";
+
+            // Se não houver membros, exibe a mensagem
             const ul = document.createElement("ul");
-
-            for(const dados of membros){
+            if (membros.length === 0) {
                 const li = document.createElement("li");
-                const span = document.createElement("span");
-                span.textContent = dados;
-                const bt = document.createElement("button");
-                bt.className = "item-btn";
-                bt.textContent = "X";
-
-                li.appendChild(span);
-                li.appendChild(bt);
+                li.textContent = "Não há petianos neste projeto.";
+                li.style.fontStyle = "italic";  // Deixa o texto em itálico
+                li.style.color = "#888";  // Cor cinza para indicar que não há membros
                 ul.appendChild(li);
+            } else {
+                // Se houver membros, cria a lista normal
+                membros.forEach(dados => {
+                    const li = document.createElement("li");
+                    const span = document.createElement("span");
+                    span.textContent = dados;
+                    const bt = document.createElement("button");
+                    bt.className = "item-btn";
+                    bt.textContent = "X";
+
+                    li.appendChild(span);
+                    li.appendChild(bt);
+                    ul.appendChild(li);
+                });
             }
+
             const divBT = document.createElement("div");
             divBT.className = "divBT";
             const novoMembro = document.createElement("button");
@@ -71,14 +96,53 @@ function gerarDropdown(){
             const excluirProj = document.createElement("button");
             excluirProj.textContent = "Excluir Projeto";
             excluirProj.className = "excluirProj";
+
             divBT.appendChild(novoMembro);
             divBT.appendChild(excluirProj);
             dropCont.appendChild(divBT);
             dropCont.appendChild(ul);
             dropdown.appendChild(button);
             dropdown.appendChild(dropCont);
+
             const lista = document.querySelector("#lista");
             lista.appendChild(dropdown);
+
+            // Resetando a cor verde de petianos quando um novo projeto for aberto
+            button.addEventListener('click', () => {
+                resetarCorPetianos();
+                adicionarCorVerdeNosMembros(nome);
+            });
+        });
+    })
+    .catch(error => {
+        console.error("Erro ao buscar dados:", error);
+    });
+}
+
+
+function resetarCorPetianos() {
+    const listaPetianos = document.querySelectorAll('#petianos ul');
+    listaPetianos.forEach(ul => {
+        ul.style.backgroundColor = '';  // Reseta a cor de fundo
+    });
+}
+
+function adicionarCorVerdeNosMembros(projetoNome) {
+    const collectionRef = db.collection('projetos');
+
+    collectionRef.where('nome', '==', projetoNome)
+    .get()
+    .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            const membros = doc.data().membros;
+            
+            // Para cada membro, altera a cor do nome
+            const listaPetianos = document.querySelectorAll('#petianos ul');
+            listaPetianos.forEach(ul => {
+                if (membros.includes(ul.textContent.trim())) {
+                    ul.style.backgroundColor = '#c8e6c9';  // Verde claro para membros do projeto
+                }
+            });
         });
     })
     .catch(error => {
@@ -224,6 +288,13 @@ function addMembro(idProj, nomeMem, nomeProj) {
     .then(() => {
         console.log('Membro adicionado com sucesso!');
 
+        // Após adicionar, alteramos a cor do nome do petiano
+        const listaMembros = document.querySelectorAll('#petianos ul');
+        listaMembros.forEach(ul => {
+            if (ul.textContent.trim() === nomeMem) {
+                ul.style.backgroundColor = '#c8e6c9';  // Verde claro
+            }
+        });
     })
     .catch((error) => {
         console.error('Erro ao adicionar membro:', error);
@@ -233,12 +304,12 @@ function addMembro(idProj, nomeMem, nomeProj) {
     const ul = dropdown.querySelector('ul');
     const li = document.createElement('li');
     const span = document.createElement('span');
-    span.textContent = nomeMem;    
+    span.textContent = nomeMem;
     const btn = document.createElement('button');
     btn.textContent = 'X';
-    btn.classList.add('item-btn');   
+    btn.classList.add('item-btn');
     li.appendChild(span);
-    li.appendChild(btn);  
+    li.appendChild(btn);
     ul.appendChild(li);
 }
 
@@ -278,29 +349,32 @@ function openModalMem(nomeProjeto){
 
 const lista = document.getElementById("lista");
 lista.addEventListener('click', (event) => {
+    if (event.target.classList.contains('dropdown-btn')) {
+        // Fecha todos os outros dropdowns
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+            if (content !== event.target.nextElementSibling) {
+                content.classList.remove('show');
+            }
+        });
 
-  if (event.target.classList.contains('dropdown-btn')) {
-    const content = event.target.nextElementSibling;
-    content.classList.toggle('show');
-
-  }else if(event.target.classList.contains('item-btn')){
-    const li = event.target.parentNode;
-    const nomePetiano = li.querySelector('span').textContent;
-    const nomeProjeto = li.closest('.dropdown').querySelector('.dropdown-btn').textContent;
-    alert(`Você deseja excluir o petiano ${nomePetiano} do projeto ${nomeProjeto}?`);
-    excluirPetiano(nomeProjeto, nomePetiano, li);
-
-  }else if(event.target.classList.contains('excluirProj')){
-    const nomeProjeto = event.target.closest('.dropdown').querySelector('.dropdown-btn').textContent;
-    const dropdown = event.target.closest('.dropdown');
-    excluirProjeto(nomeProjeto, dropdown);
-
-  }else if (event.target.classList.contains('novoMembro')) {
-    //const projeto = event.target.closest('.dropdown').querySelector('.dropdown-btn').textContent;
-    const li = event.target.parentNode;
-    const nomeProjeto = li.closest('.dropdown').querySelector('.dropdown-btn').textContent;
-    openModalMem(nomeProjeto);
-  }
+        // Alterna o dropdown clicado
+        const content = event.target.nextElementSibling;
+        content.classList.toggle('show');
+    } else if (event.target.classList.contains('item-btn')) {
+        const li = event.target.parentNode;
+        const nomePetiano = li.querySelector('span').textContent;
+        const nomeProjeto = li.closest('.dropdown').querySelector('.dropdown-btn').textContent;
+        alert(`Você deseja excluir o petiano ${nomePetiano} do projeto ${nomeProjeto}?`);
+        excluirPetiano(nomeProjeto, nomePetiano, li);
+    } else if (event.target.classList.contains('excluirProj')) {
+        const nomeProjeto = event.target.closest('.dropdown').querySelector('.dropdown-btn').textContent;
+        const dropdown = event.target.closest('.dropdown');
+        excluirProjeto(nomeProjeto, dropdown);
+    } else if (event.target.classList.contains('novoMembro')) {
+        const li = event.target.parentNode;
+        const nomeProjeto = li.closest('.dropdown').querySelector('.dropdown-btn').textContent;
+        openModalMem(nomeProjeto);
+    }
 });
 
 const petianos = document.getElementById('petianos');
